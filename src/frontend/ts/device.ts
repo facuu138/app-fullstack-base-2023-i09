@@ -4,4 +4,5 @@ class Device{
   description: string;
   state: boolean;
   type: number;
+  image_url: string;
 }

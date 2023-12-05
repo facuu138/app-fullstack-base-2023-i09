@@ -1,4 +1,4 @@
-
+/*BODY*/
 body {
     display: flex;
     min-height: 100vh;
@@ -8,15 +8,28 @@ body {
 main {
     flex: 1 0 auto;
 }
+
+/*DEVICES LIST*/
+#devicesList {
+    margin: auto;
+    margin-top: 50px;
+}
+
+#devicesList div div {
+    border: none;
+}
+
+#devicesAttributes {
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
 div>div.col{
     background-color: bisque;
     border: 2px solid black;
 
 }
 
-#btnListar{
-    width: 100%;
-}
 .textoError{
     width: 50%;
     margin: auto;
@@ -30,4 +43,51 @@ div>div.col{
     text-align: center;
     color: rgb(71, 161, 73);
 
+}
+
+/*FOOTER*/
+.footer-div {
+    border: none !important;
+}
+
+.footer-div i {
+    color: white !important;
+    transition: color 0.2s ease !important;
+}
+
+.footer-div i:hover {
+    color: #fb8c00 !important;
+}
+
+.icon-container-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+/*FAQ*/
+#faqbody {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+}
+
+#faqbody main {
+    margin: 20px
+}
+
+#faqbody h1, #faqbody h2 {
+    color: #333;
+}
+
+#faqbody h2 {
+    margin-top: 20px;
+}
+
+#faqbody ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#faqbody li {
+    margin-bottom: 10px;
 }

@@ -1,62 +1,54 @@
-
 var M;
+
 class Main implements EventListenerObject{
-    public usuarios: Array<Usuario>= new Array<Usuario>();
-  
+    public usuarios: Array<Usuario> = new Array<Usuario>();
 
-    private buscarPersonas() {
-
-   
-        for (let u of this.usuarios) {
-            console.log(u.mostrar(),this.usuarios.length);
-        }
-    }
-    private buscarDevices() {
-        
+    private getDevices() {
         let xmlRequest = new XMLHttpRequest();
-        
         xmlRequest.onreadystatechange = () => {
-     
             if (xmlRequest.readyState == 4) {
-                if(xmlRequest.status==200){
-                    console.log(xmlRequest.responseText, xmlRequest.readyState);    
-                    let respuesta = xmlRequest.responseText;
-                    let datos:Array<Device> = JSON.parse(respuesta);
+                if(xmlRequest.status==200){  
+                    let response = xmlRequest.responseText;
+                    let datos: Array<Device> = JSON.parse(response);
                     
-                    let ul = document.getElementById("listaDisp"); 
+                    let ulDevices = document.getElementById("deviceList"); 
 
                     for (let d of datos) {
                         let itemList =
-                            ` <li class="collection-item avatar">
-                        <img src="./static/images/lightbulb.png" alt="" class="circle">
-                        <span class="title">${d.name}</span>
-                        <p>
-                         ${d.description}
-                        </p>
-                        <a href="#!" class="secondary-content">
-                        <div class="switch">
-                        <label>
-                          Off
-                          <input type="checkbox"`;
-                          itemList +=`nuevoAtt="${d.id}" id="cb_${d.id}"`
-                        if (d.state) {
-                            itemList+= ` checked `
-                        }
-                        
-                        itemList+= `>
-                          <span class="lever"></span>
-                          On
-                        </label>
-                      </div>
-                        </a>
-                      </li>`
-                       
-                        ul.innerHTML += itemList;
-
+                        `
+                        <li class="collection-item avatar">
+                            <div class="col s7">
+                                <img src="${d.image_url}" alt="N/A" class="circle">
+                                <span class="title">${d.name}</span>
+                                <p>${d.description}</p>
+                            </div>
+                            <div class="col s1">
+                                <a href="#!"><i class="material-icons small">edit</i></a>
+                            </div>
+                            <div class="col s3">
+                                <a href="#!" class="center valign-wrapper">
+                                    <div class="switch">
+                                        <label>
+                                            Off
+                                            <input type="checkbox"`;
+                                            itemList +=`nuevoAtt="${d.id}" id="cb_${d.id}"`
+                                            if (d.state) { itemList+= ` checked `}
+                                            itemList += `>
+                                            <span class="lever"></span>
+                                            On
+                                        </label>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col s1">
+                                <a href="#!"><i class="material-icons small">delete_forever</i></a>
+                            </div>
+                        </li>
+                        `
+                        ulDevices.innerHTML += itemList;
                     }
                     for (let d of datos) {
                         let checkbox = document.getElementById("cb_" + d.id);
-
                         checkbox.addEventListener("click", this);
                     }
 
@@ -117,12 +109,15 @@ class Main implements EventListenerObject{
         
     }
 
+    public initGetDevices() {
+        this.getDevices();
+    }
+
     handleEvent(object: Event): void {
         let elemento = <HTMLElement>object.target;
         
-        
         if ("btnListar" == elemento.id) {
-            this.buscarDevices();
+            this.getDevices();
 
             
         } else if ("btnGuardar" == elemento.id) {
@@ -140,7 +135,6 @@ class Main implements EventListenerObject{
 
     
 window.addEventListener("load", () => {
-
     var elems = document.querySelectorAll('select');
     M.FormSelect.init(elems, "");
     var elemsModal = document.querySelectorAll('.modal');
@@ -148,16 +142,13 @@ window.addEventListener("load", () => {
 
     let main1: Main = new Main();
     let boton = document.getElementById("btnListar");
-    
-    boton.addEventListener("click", main1);   
+
+    main1.initGetDevices();
 
     let botonGuardar = document.getElementById("btnGuardar");
     botonGuardar.addEventListener("click",main1);
 
     let checkbox = document.getElementById("cb");
     checkbox.addEventListener("click", main1);
-    
-
-
 });
 

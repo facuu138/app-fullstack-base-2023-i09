@@ -4,13 +4,13 @@ var PORT    = 3000;
 
 var express = require('express');
 var cors = require("cors");
-var corsOptions = {origin:"*",optionSucessStatus:200};
+var corsOptions = {origin:"*",optionSuccessStatus:200};
 
 
 var app     = express();
 app.use(cors(corsOptions));
 
-var utils   = require('./mysql-connector');
+var connection   = require('./mysql-connector');
 
 // to parse application/json
 app.use(express.json()); 
@@ -21,7 +21,7 @@ app.use(express.static('/home/node/app/static/'));
 app.get("/otraCosa/:id/:algo",(req,res,next)=>{
     console.log("id",req.params.id)
     console.log("algo",req.params.algo)
-    utils.query("select * from Devices where id="+req.params.id,(err,rsp,fields)=>{
+    connection.query("select * from Devices where id="+req.params.id,(err,rsp,fields)=>{
         if(err==null){
             
             console.log("rsp",rsp);
@@ -35,7 +35,18 @@ app.get("/otraCosa/:id/:algo",(req,res,next)=>{
     });
     
 });
-app.post("/device",(req,res,next)=>{
+
+app.post("/addDevice", (req,res) => {
+    console.log("Agregando nuevo dispositivo...")
+    console.log("Nuevo dispositivo agregado")
+})
+
+app.post("/removeDevice", (req,res) => {
+    console.log("Eliminando dispositivo...")
+    console.log("Dispositivo eliminado")
+})
+
+app.post("/modifyDevice",(req,res)=>{
     console.log("Llego el post",
     "UPDATE Devices SET state = "+req.body.state+" WHERE id = "+req.body.id);
     if(req.body.name==""){
@@ -45,34 +56,26 @@ app.post("/device",(req,res,next)=>{
     }
     
 });
-app.get('/devices/', function(req, res, next) {
-    devices = [
-        { 
-            'id': 1, 
-            'name': 'Lampara 1', 
-            'description': 'Luz living', 
-            'state': 0, 
-            'type': 1, 
-        },
-        { 
-            'id': 2, 
-            'name': 'Ventilador 1', 
-            'description': 'Ventilador Habitacion', 
-            'state': 1, 
-            'type': 2, 
-        },
-        { 
-            'id': 3, 
-            'name': 'TV', 
-            'description': 'TV led Habitacion', 
-            'state': 0, 
-            'type': 3, 
+
+app.post("/changeDeviceState", (req,res) => {
+    console.log("Cambiando estado de dispositivo...")
+    console.log("Estado actualizado")    
+})
+
+app.get('/devices', (req, res) => {
+    const query = 'SELECT * FROM Devices';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error querying devices:', err);
+            res.status(500).send('Internal Server Error');
+            return;
         }
-    ]
-    res.send(JSON.stringify(devices)).status(200);
+        res.json(results);
+    });
 });
 
-app.listen(PORT, function(req, res) {
+app.listen(PORT, () => {
     console.log("NodeJS API running correctly");
 });
 
