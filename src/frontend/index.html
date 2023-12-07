@@ -23,7 +23,13 @@
                 </div>
             </nav>	
         </header>
+
+        <!-- Main -->
         <main>
+            <div id="add-button" class="container right-align">
+                <p>Add device</p><a href="#modal-add" class="btn-floating modal-trigger"><i class="material-icons">add</i></a>
+            </div>
+
             <div class="container" id="devicesList">
                 <div class="row">
                     <div id="list" miAtt="true" class="col s12 m12 l12 transparent">
@@ -33,30 +39,59 @@
                 </div>
             </div>
 
+            <!-- Delete Modal -->
+            <div id="modal-delete" class="modal">
+                <div class="modal-content center">
+                    <p id="deviceWarning"></p>
+                    <a href="#!" id="deleteYes" class="modal-close waves-effect waves-green btn-flat">Yes</a>
+                    <a href="#!" id="deleteNo" class="modal-close waves-effect waves-green btn-flat">No</a>
+                </div>
+            </div>
 
-            <div><a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a></div>
-            <!-- Modal Structure -->
-            <div id="modal1" class="modal">
-                <div class="modal-content">
-                    <div class="col s12 m6 l6">
-                        <h1>Cargar usuario</h1>
-                        <label for="iNombre">Nombre de usuario</label>
-                        <input id="iNombre" type="text" value="" placeholder="jlopez" />
-                        <div class="input-field">
-                            <input id="iPassword" type="password" class="validate">
-                            <label for="iPassword">Password</label>
-                        </div>
-                        <p>
-                            <label>
-                            <input type="checkbox"  />
-                            <span>Recordar usuario y contraseña</span>
-                            </label>
-                        </p>
-                        <p id="pInfo"  ></p>
-                        <button id="btnGuardar" class="modal-close  btn">Guardar</button>
+            <!-- Edit Modal -->
+            <div id="modal-edit" class="modal">
+                <div class="modal-content center">
+                    <p id="deviceWarning2"></p>
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <p>Device name</p>
+                                    <input placeholder="" id="deviceName" type="text" class="validate">
+                                </div>
+                                <div class="input-field col s6">
+                                    <p>Device description</p>
+                                    <input placeholder="" id="deviceDescription" type="text">
+                                </div>
+                            </div>
+                            <a href="#!" id="saveButton" class="modal-close waves-effect waves-green btn-flat">Save</a>
+                        </form>
                     </div>
                 </div>
             </div>
+
+            <!-- Add Modal -->
+            <div id="modal-add" class="modal">
+                <div class="modal-content center">
+                    <p id="deviceWarning2"></p>
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <p>Device name</p>
+                                    <input placeholder="Lamp 1" id="deviceNameAdd" type="text" class="validate">
+                                </div>
+                                <div class="input-field col s6">
+                                    <p>Device description</p>
+                                    <input placeholder="Living room lamp" id="deviceDescriptionAdd" type="text">
+                                </div>
+                            </div>
+                            <a href="#!" id="saveButton" class="modal-close waves-effect waves-green btn-flat">Save</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </main>
 		<!-- Page Footer -->
         <footer class="page-footer" style="background-color:#fb8c00">

@@ -9,10 +9,24 @@ main {
     flex: 1 0 auto;
 }
 
+/*ADD BUTTON*/
+#add-button {
+    display: flex;
+    position: relative;
+    justify-content: flex-end;
+    margin-top: 3%;
+    margin-bottom: 0;
+    align-items: center;
+}
+
+#add-button p {
+    padding-right: 1%;
+}
+
 /*DEVICES LIST*/
 #devicesList {
     margin: auto;
-    margin-top: 50px;
+    margin-top: 1%;
 }
 
 #devicesList div div {
@@ -44,6 +58,33 @@ div>div.col{
     color: rgb(71, 161, 73);
 
 }
+
+/* MODAL EDIT */
+#modal-edit .row .input-field{
+    background-color: #edede9;
+    border:none;
+    padding: 0px;
+    margin: 5%;
+    width: 40%;
+}
+
+#modal-edit .row .input-field{
+    padding: 10px;
+}
+
+/* MODAL EDIT */
+#modal-add .row .input-field{
+    background-color: #edede9;
+    border:none;
+    padding: 0px;
+    margin: 5%;
+    width: 40%;
+}
+
+#modal-add .row .input-field{
+    padding: 10px;
+}
+
 
 /*FOOTER*/
 .footer-div {
