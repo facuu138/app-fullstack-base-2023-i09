@@ -178,19 +178,24 @@ Adicional se agrego una pagina de FAQ a modo de ejemplo y se agrego el apartado 
 
 ### Backend
 
-En el archivo src/backend/index.js podran encontrar toda la configuracion del backend
+1. Archivos Principales
+index.js
+Este archivo contiene la configuración principal del backend. Aquí encontrarás la inicialización del servidor y el código correspondiente para las APIs.
 
-El backend consta de 6 APIs.
+2. Carpetas de Configuración
+src/backend/
+En esta carpeta, se encuentran otros archivos de configuración relacionados con el backend. Pueden incluir ajustes para la seguridad, la gestión de sesiones, o cualquier otro aspecto relevante.
 
-base_url: localhost:8000
-GET("/device/:id") --> Permite traer los datos de un dispositivo en especifico, basado en su id como parametro.
-GET("/devices) --> Permite traer todos los dispositivos.
-POST("addDevice") --> Permite agregar un dispositivo nuevo, requiere de "name" y "description" en el body.
-POST("removeDevice") --> Permite eliminar un dispositivo, requiere del "id" en el body.
-POST("modifyDevice") --> Permite modificar el nombre y la descripcion de un dispositivo, requiere de "name" o "descripcion" en el body.
-POST("changeDeviceState") --> Permite modificar el estado de un dispositivo, requiere de "state" en el body.
-
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
+3. Base de Datos MySQL
+- Tipo de Base de Datos: El backend utiliza MySQL como servidor de base de datos.
+- Nombre de la Base de Datos: La base de datos se denomina "smart_home".
+- Tabla: la tabla Devices contiene toda la informacion necesaria para el funcionamiento de la app.
+    - id: Es un campo de tipo entero que sirve como clave primaria. Cada dispositivo tiene un identificador único.
+    - name: Es un campo de tipo cadena de texto (VARCHAR) que almacena el nombre del dispositivo. Este campo no puede ser nulo.
+    - description: Es un campo de tipo cadena de texto (VARCHAR) que almacena una descripción del dispositivo. También es obligatorio.
+    - state: Es un campo de tipo entero que almacena el estado del dispositivo. La elección de usar un entero sugiere que este campo puede contener valores que representan diferentes estados.
+    - type: Es un campo de tipo entero que almacena el tipo de dispositivo. Puedes tener un conjunto de valores predefinidos para los tipos de dispositivos y asignar a cada tipo un número entero.
+    - image_url: Es un campo de tipo cadena de texto (VARCHAR) que almacena la URL de la imagen asociada al dispositivo.
 
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
