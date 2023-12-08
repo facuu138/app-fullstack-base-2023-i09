@@ -15,7 +15,7 @@ Realizando estas tareas vas a a tener una aplicación fullstack IoT del mundo re
 
 En esta imagen podés ver una posible implementación del cliente web que controla los artefactos del hogar.
 
-![architecture](doc/webapp-example-1.png)
+![architecture](doc/smarthub.png)
 
 ## Comenzando 🚀
 
@@ -178,15 +178,15 @@ Adicional se agrego una pagina de FAQ a modo de ejemplo y se agrego el apartado 
 
 ### Backend
 
-1. Archivos Principales
+1. Archivos Principales:
 index.js
-Este archivo contiene la configuración principal del backend. Aquí encontrarás la inicialización del servidor y el código correspondiente para las APIs.
+| Este archivo contiene la configuración principal del backend. Aquí encontrarás la inicialización del servidor y el código correspondiente para las APIs.
 
-2. Carpetas de Configuración
+2. Carpetas de Configuración:
 src/backend/
-En esta carpeta, se encuentran otros archivos de configuración relacionados con el backend. Pueden incluir ajustes para la seguridad, la gestión de sesiones, o cualquier otro aspecto relevante.
+| En esta carpeta, se encuentran otros archivos de configuración relacionados con el backend. Pueden incluir ajustes para la seguridad, la gestión de sesiones, o cualquier otro aspecto relevante.
 
-3. Base de Datos MySQL
+3. Base de Datos MySQL: 
 - Tipo de Base de Datos: El backend utiliza MySQL como servidor de base de datos.
 - Nombre de la Base de Datos: La base de datos se denomina "smart_home".
 - Tabla: la tabla Devices contiene toda la informacion necesaria para el funcionamiento de la app.
