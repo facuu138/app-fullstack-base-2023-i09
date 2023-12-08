@@ -30,6 +30,7 @@ class Main implements EventListenerObject{
                         state.addEventListener("click", this);
                         editButton.addEventListener("click",this); 
                     }
+
                 } else {
                     console.log("Couldn't find any data at /devices");
                 }
@@ -60,7 +61,7 @@ class Main implements EventListenerObject{
                 <p>${d.description}</p>
             </div>
             <div class="col s2">
-                <a href="#modal-edit" class="btn-floating modal-trigger" id="edit_${d.id}"><i class="material-icons small">edit</i></a>
+                <a href="#modal-edit" class="btn-floating modal-trigger"><i id="edit_${d.id}" class="material-icons small">edit</i></a>
             </div>
             <div class="col s4">
                 <a href="#!" class="center valign-wrapper">
@@ -68,7 +69,7 @@ class Main implements EventListenerObject{
                 </a>
             </div>
             <div class="col s1">
-                <a class="btn-floating" id="delete_${d.id}" deviceId="${d.id}"><i class="material-icons small">delete_forever</i></a>
+                <a class="btn-floating"><i id="delete_${d.id}" deviceId="${d.id}" class="material-icons small">delete_forever</i></a>
             </div>
         </li>`;
     }
@@ -80,6 +81,7 @@ class Main implements EventListenerObject{
             if (xmlRequest.readyState == 4) {
                 if (xmlRequest.status == 200) {
                     console.log("Device deleted successfully",xmlRequest.responseText);   
+                    location.reload();
                 } else {
                     alert("Something went wrong");
                 }
@@ -93,22 +95,19 @@ class Main implements EventListenerObject{
     
     }
 
-    private addDevice (): void {
+    private addDevice (name: string, description:string): void {
         console.log("submitAddDevice called");
-        let nameInput = <HTMLInputElement> document.getElementById("deviceNameAdd");
-        let descriptionInput = <HTMLInputElement> document.getElementById("deviceDescriptionAdd");
-    
-        let saveButton = document.getElementById("saveButtonAdd");
-        saveButton.addEventListener("click", this);
 
         let xmlRequest = new XMLHttpRequest();
     
         xmlRequest.onreadystatechange = () => {
             if (xmlRequest.readyState == 4) {
                 if (xmlRequest.status == 200) {
-                    console.log("Status 200",xmlRequest.responseText);    
+                    console.log("Status 200",xmlRequest.responseText);
+                    location.reload();
                 } else {
                     alert("Something went wrong");
+                    location.reload();
                 }
             }
         }
@@ -116,8 +115,8 @@ class Main implements EventListenerObject{
         xmlRequest.open("POST", "http://localhost:8000/addDevice", true)
         xmlRequest.setRequestHeader("Content-Type", "application/json");
         let s = {
-            name: nameInput.value,
-            description: descriptionInput.value
+            name: name,
+            description: description
         };
         xmlRequest.send(JSON.stringify(s));
     }
@@ -129,7 +128,7 @@ class Main implements EventListenerObject{
         xmlRequest.onreadystatechange = () => {
             if (xmlRequest.readyState == 4) {
                 if (xmlRequest.status == 200) {
-                    console.log("Status 200",xmlRequest.responseText);        
+                    console.log("Status 200",xmlRequest.responseText);    
                 } else {
                     alert("Something went wrong");
                 }
@@ -145,9 +144,7 @@ class Main implements EventListenerObject{
         xmlRequest.send(JSON.stringify(s));
     }
 
-    private modifyDevice (id:number) {
-        let nameInput = <HTMLInputElement> document.getElementById("deviceNameModify");
-        let descriptionInput = <HTMLInputElement> document.getElementById("deviceDescriptionModify");
+    private modifyDevice (id:number, name:string, description:string) {
         
         let xmlRequest = new XMLHttpRequest();
     
@@ -155,6 +152,7 @@ class Main implements EventListenerObject{
             if (xmlRequest.readyState == 4) {
                 if (xmlRequest.status == 200) {
                     console.log("Status 200",xmlRequest.responseText);
+                    location.reload();
                 } else {
                     alert("Something went wrong");
                 }
@@ -165,8 +163,8 @@ class Main implements EventListenerObject{
         xmlRequest.setRequestHeader("Content-Type", "application/json");
         let s = {
             id:id,
-            name: nameInput.value,
-            description: descriptionInput.value
+            name: name,
+            description: description
         };
         xmlRequest.send(JSON.stringify(s));
     }
@@ -179,17 +177,23 @@ class Main implements EventListenerObject{
             console.log(deviceId);
             this.deleteDevice(deviceId);
         } else if ("saveButtonAdd" == element.id) {
-            this.addDevice()
+            console.log("Save Button Clicked");
+            let nameInput = <HTMLInputElement> document.getElementById("deviceNameAdd");
+            let descriptionInput = <HTMLInputElement> document.getElementById("deviceDescriptionAdd");
+            this.addDevice(nameInput.value,descriptionInput.value);
         } else if (element.id.startsWith("state_")) {
             let deviceId = parseInt(element.getAttribute("deviceId"));
             let stateInput = <HTMLInputElement>element;
             let state = stateInput.checked ? 1 : 0;
             console.log(deviceId, state);
             this.changeDeviceState(deviceId, state);
+        } else if (element.id.startsWith("saveButtonEdit")) {
+            let deviceId = parseInt(element.getAttribute("deviceId"));
+            let nameInput = <HTMLInputElement> document.getElementById("deviceNameModify");
+            let descriptionInput = <HTMLInputElement> document.getElementById("deviceDescriptionModify");
+            this.modifyDevice(deviceId,nameInput.value,descriptionInput.value);
         } else if (element.id.startsWith("edit_")) {
-            let device = this.deviceData.find(
-                (d) => d.id === Number(element.id.split("_")[1])
-            );
+            const d = this.deviceData.find((d) => d.id === Number(element.id.split("_")[1]));
             let editDeviceDiv = document.getElementById("editDevice");
             editDeviceDiv.innerHTML = `
             <div class="row">
@@ -197,26 +201,25 @@ class Main implements EventListenerObject{
                     <div class="row">
                         <div class="input-field col s6">
                             <p>Device name</p>
-                            <input placeholder="" id="deviceNameModify" type="text" class="validate" value="${device.name}">
+                            <input placeholder="" id="deviceNameModify" type="text" class="validate" value="${d.name}">
                         </div>
                         <div class="input-field col s6">
                             <p>Device description</p>
-                            <input placeholder="" id="deviceDescriptionModify" type="text" value="${device.description}">
+                            <input placeholder="" id="deviceDescriptionModify" type="text" value="${d.description}">
                         </div>
                     </div>
-                    <a href="#!" id="saveButtonEdit" class="modal-close waves-effect waves-green btn-flat">Save</a>
+                    <button id="saveButtonEdit" deviceId="${d.id}" class="modal-close waves-effect waves-green btn-flat">Save</button>
                 </form>
             </div>
             `
 
             let saveButtonEdit = document.getElementById("saveButtonEdit");
             saveButtonEdit.addEventListener("click",this);
-
-            this.modifyDevice(device.id);
-        }
+        } 
     }
 }
 
+console.log("Script loaded");
 window.addEventListener("load", () => {
     var elems = document.querySelectorAll('select');
     M.FormSelect.init(elems, "");
@@ -225,8 +228,11 @@ window.addEventListener("load", () => {
 
     let main: Main = new Main();
 
-    main.initialize();
+    console.log("Main instance created")
+    main.initialize()
 
+    let addButtonEdit = document.getElementById("saveButtonAdd");
+    addButtonEdit.addEventListener("click",main);
 });
 
 

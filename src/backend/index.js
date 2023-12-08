@@ -31,17 +31,18 @@ app.post("/addDevice", (req, res) => {
 
     const defaultState = req.body.state || 0;
     const defaultType = req.body.type || 0;
+    const defaultImage = './static/images/iot.png'
 
-    const query = 'INSERT INTO Devices (name, description, state, type) VALUES (?, ?, ?, ?)';
+    const query = 'INSERT INTO Devices (name, description, state, type, image_url) VALUES (?, ?, ?, ?, ?)';
 
-    connection.query(query, [name, description, defaultState, defaultType], (err, results) => {
+    connection.query(query, [name, description, defaultState, defaultType, defaultImage], (err, results) => {
         if (err) {
             console.error('Error adding device:', err);
             return res.status(500).send('Internal Server Error');
         }
 
         const insertedId = results.insertId;
-        res.status(201).send(`Device added successfully with ID: ${insertedId}`);
+        res.status(200).send(`Device added successfully with ID: ${insertedId}`);
     });
 });
 
@@ -84,7 +85,7 @@ app.post("/modifyDevice", (req, res) => {
     let query;
 
     if (req.body.name !== "") {
-        query = `UPDATE Devices SET name = ${req.body.name} WHERE id = ${req.body.id}`;
+        query = `UPDATE Devices SET name = "${req.body.name}" WHERE id = ${req.body.id}`;
     } else if (req.body.description !== "") {
         query = `UPDATE Devices SET description = ${req.body.description} WHERE id = ${req.body.id}`;
     } else {
