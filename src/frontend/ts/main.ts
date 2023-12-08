@@ -1,47 +1,59 @@
+// Declare a variable M (assuming it's a reference to a Materialize object)
 var M;
 
-class Main implements EventListenerObject{
+// Define a class named Main that implements the EventListenerObject interface
+class Main implements EventListenerObject {
+    // Array to store device data
     private deviceData: Array<Device> = [];
 
+    // Method to initialize the application
     public initialize() {
-        this.modifyDevicesHTML()
+        this.modifyDevicesHTML();
     }
 
+    // Method to fetch and display device data from the server
     private modifyDevicesHTML() {
+        // Create a new XMLHttpRequest object
         let xmlRequest = new XMLHttpRequest();
 
+        // Define the callback function for the asynchronous request
         xmlRequest.onreadystatechange = () => {
             if (xmlRequest.readyState == 4) {
                 if (xmlRequest.status == 200) {
+                    // Parse the JSON response and update deviceData array
                     let response = xmlRequest.responseText;
                     this.deviceData = JSON.parse(response);
-                    let ulDevices = document.getElementById("deviceList");
 
+                    // Update the HTML to display devices
+                    let ulDevices = document.getElementById("deviceList");
                     for (let d of this.deviceData) {
                         ulDevices.innerHTML += this.createDevicesItems(d);
                     }
 
+                    // Attach event listeners to delete, edit, and state buttons
                     for (let d of this.deviceData) {
                         let deleteButton = document.getElementById("delete_" + d.id);
                         let state = document.getElementById("state_" + d.id);
-                        let editButton = document.getElementById("edit_"+ d.id);                  
+                        let editButton = document.getElementById("edit_" + d.id);
 
                         deleteButton.addEventListener("click", this);
                         state.addEventListener("click", this);
-                        editButton.addEventListener("click",this); 
+                        editButton.addEventListener("click", this);
                     }
-
                 } else {
                     console.log("Couldn't find any data at /devices");
                 }
             }
-        }
+        };
 
-        xmlRequest.open("GET", "http://localhost:8000/devices", true)
+        // Open and send the GET request to the server
+        xmlRequest.open("GET", "http://localhost:8000/devices", true);
         xmlRequest.send();
     }
 
+    // Method to create HTML representation of a device item
     private createDevicesItems(d: Device): string {
+        // Generate the HTML for the device item
         let state = d.state ? 'checked' : '';
 
         let typeSwitch = `
@@ -74,6 +86,7 @@ class Main implements EventListenerObject{
         </li>`;
     }
 
+    // Method to delete a device by sending a request to the server
     private deleteDevice (id: number) {
         let xmlRequest = new XMLHttpRequest();
     
@@ -95,6 +108,7 @@ class Main implements EventListenerObject{
     
     }
 
+    // Method to add a new device by sending a request to the server
     private addDevice (name: string, description:string): void {
         console.log("submitAddDevice called");
 
@@ -121,6 +135,7 @@ class Main implements EventListenerObject{
         xmlRequest.send(JSON.stringify(s));
     }
 
+    // Method to change the state of a device by sending a request to the server
     private changeDeviceState (id:number,state:number) {
         console.log("changeDeviceState called");
         let xmlRequest = new XMLHttpRequest();
@@ -144,6 +159,7 @@ class Main implements EventListenerObject{
         xmlRequest.send(JSON.stringify(s));
     }
 
+    // Method to modify the details of a device by sending a request to the server
     private modifyDevice (id:number, name:string, description:string) {
         
         let xmlRequest = new XMLHttpRequest();
@@ -169,6 +185,7 @@ class Main implements EventListenerObject{
         xmlRequest.send(JSON.stringify(s));
     }
 
+    // Event handling method for various button clicks
     handleEvent(object: Event): void {
         let element = <HTMLElement>object.target;
 
@@ -219,20 +236,25 @@ class Main implements EventListenerObject{
     }
 }
 
+// Log a message when the script is loaded
 console.log("Script loaded");
+
+// Execute code when the window is fully loaded
 window.addEventListener("load", () => {
+    // Initialize Materialize components
     var elems = document.querySelectorAll('select');
     M.FormSelect.init(elems, "");
     var elemsModal = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elemsModal, "");
 
+    // Create an instance of the Main class
     let main: Main = new Main();
 
-    console.log("Main instance created")
-    main.initialize()
+    // Log a message and initialize the application
+    console.log("Main instance created");
+    main.initialize();
 
+    // Add a click event listener to the "Save" button for adding a device
     let addButtonEdit = document.getElementById("saveButtonAdd");
-    addButtonEdit.addEventListener("click",main);
+    addButtonEdit.addEventListener("click", main);
 });
-
-

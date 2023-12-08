@@ -1,94 +1,114 @@
 <!DOCTYPE html>
-  <html>
-    <head>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <link type="text/css" rel="stylesheet" href="./static/css/styles.css"  media="screen,projection"/>
-      <link type="text/css" rel="stylesheet" href="./static/css/materialize.min.css"  media="screen,projection"/>
-      <script type="text/javascript" src="./static/js/materialize.min.js"></script>
-      <script type="text/javascript" src="js/device.js"></script>
-      <script type="text/javascript" src="js/main.js"></script>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <header>
-            <!-- Navigation bar -->
-            <nav style="background-color:#fb8c00">
-                <div class="nav-wrapper">
-                    <a href="#!" class="brand-logo center" style="margin-left: 15px;">SmartSync Hub</a>
-                    <ul id="nav-mobile" class="right" style="margin-right: 15px;">
-                        <li><a href="faq.html">FAQs</a></li>
+<html>
+
+<head>
+    <!-- Include Material Icons from Google Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Include custom stylesheets and JavaScript libraries -->
+    <link type="text/css" rel="stylesheet" href="./static/css/styles.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="./static/css/materialize.min.css" media="screen,projection" />
+    <script type="text/javascript" src="./static/js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/device.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    
+    <!-- Set the viewport for responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <header>
+        <!-- Navigation bar -->
+        <nav style="background-color:#fb8c00">
+            <div class="nav-wrapper">
+                <!-- SmartSync Hub logo -->
+                <a href="#!" class="brand-logo center" style="margin-left: 15px;">SmartSync Hub</a>
+                <!-- Navigation links -->
+                <ul id="nav-mobile" class="right" style="margin-right: 15px;">
+                    <li><a href="faq.html">FAQs</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <!-- Add device button -->
+        <div id="add-button" class="container right-align">
+            <p>Add device</p><a href="#modal-add" class="btn-floating modal-trigger"><i class="material-icons">add</i></a>
+        </div>
+
+        <div class="container" id="devicesList">
+            <div class="row">
+                <!-- Device list container -->
+                <div id="list" miAtt="true" class="col s12 m12 l12 transparent">
+                    <ul class="collection" id="deviceList">
                     </ul>
                 </div>
-            </nav>	
-        </header>
-
-        <!-- Main -->
-        <main>
-            <div id="add-button" class="container right-align">
-                <p>Add device</p><a href="#modal-add" class="btn-floating modal-trigger"><i class="material-icons">add</i></a>
             </div>
+        </div>
 
-            <div class="container" id="devicesList">
+        <!-- Edit Modal -->
+        <div id="modal-edit" class="modal">
+            <div class="modal-content center">
+                <!-- Warning for device editing -->
+                <p id="deviceWarning2"></p>
+                <div id="editDevice"></div>
+            </div>
+        </div>
+
+        <!-- Add Modal -->
+        <div id="modal-add" class="modal">
+            <div class="modal-content center">
+                <!-- Warning for adding a device -->
+                <p id="deviceWarning2"></p>
                 <div class="row">
-                    <div id="list" miAtt="true" class="col s12 m12 l12 transparent">
-                        <ul class="collection" id="deviceList">
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Edit Modal -->
-            <div id="modal-edit" class="modal">
-                <div class="modal-content center">
-                    <p id="deviceWarning2"></p>
-                    <div id="editDevice"></div>
-                </div>
-            </div>
-
-            <!-- Add Modal -->
-            <div id="modal-add" class="modal">
-                <div class="modal-content center">
-                    <p id="deviceWarning2"></p>
-                    <div class="row">
-                        <form class="col s12">
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <p>Device name</p>
-                                    <input placeholder="Lamp 1" id="deviceNameAdd" type="text" class="validate">
-                                </div>
-                                <div class="input-field col s6">
-                                    <p>Device description</p>
-                                    <input placeholder="Living room lamp" id="deviceDescriptionAdd" type="text">
-                                </div>
+                    <form class="col s12">
+                        <div class="row">
+                            <!-- Input fields for device name and description -->
+                            <div class="input-field col s6">
+                                <p>Device name</p>
+                                <input placeholder="Lamp 1" id="deviceNameAdd" type="text" class="validate">
                             </div>
-                            <button href="#!" id="saveButtonAdd" class="modal-close waves-effect waves-green btn-flat">Save</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-		<!-- Page Footer -->
-        <footer class="page-footer" style="background-color:#fb8c00">
-            <div class="container">
-                <div class="row">
-                    <div class="col s5 l5 transparent footer-div">
-                        <h5 class="white-text">SmartSync</h5>
-                        <p class="white-text">Copyright ### - 2021</p>
-                    </div>
-                    <div class="col s2 l2 transparent footer-div center">
-                        <br>
-                        <a class="white-text" href="faq.html"><i class="medium material-icons">help</i></a>
-                    </div>
-                    <div class="col s5 l5 transparent footer-div right-align">
-                        <h5 class="white-text">Contact Information</h5>
-                        <div class="icon-container-footer">
-                            <a class="white-text" href="mailto:fdzf05@gmail.com" target="_blank"><i class="small material-icons">contact_email</i></a>
-                            <a class="white-text" href="https://www.linkedin.com/in/facundofernandez13/" target="_blank"><i class="small material-icons">person</i></a>
+                            <div class="input-field col s6">
+                                <p>Device description</p>
+                                <input placeholder="Living room lamp" id="deviceDescriptionAdd" type="text">
+                            </div>
                         </div>
+                        <!-- Save button for adding a device -->
+                        <button href="#!" id="saveButtonAdd" class="modal-close waves-effect waves-green btn-flat">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="page-footer" style="background-color:#fb8c00">
+        <div class="container">
+            <div class="row">
+                <!-- SmartSync information and copyright -->
+                <div class="col s5 l5 transparent footer-div">
+                    <h5 class="white-text">SmartSync</h5>
+                    <p class="white-text">Copyright ### - 2021</p>
+                </div>
+                <!-- Help icon and link to FAQs -->
+                <div class="col s2 l2 transparent footer-div center">
+                    <br>
+                    <a class="white-text" href="faq.html"><i class="medium material-icons">help</i></a>
+                </div>
+                <!-- Contact information and social media links -->
+                <div class="col s5 l5 transparent footer-div right-align">
+                    <h5 class="white-text">Contact Information</h5>
+                    <div class="icon-container-footer">
+                        <!-- Email and LinkedIn icons with links -->
+                        <a class="white-text" href="mailto:fdzf05@gmail.com" target="_blank"><i class="small material-icons">contact_email</i></a>
+                        <a class="white-text" href="https://www.linkedin.com/in/facundofernandez13/" target="_blank"><i class="small material-icons">person</i></a>
                     </div>
                 </div>
             </div>
-        </footer>
-    </body>
+        </div>
+    </footer>
+</body>
+
 </html>
