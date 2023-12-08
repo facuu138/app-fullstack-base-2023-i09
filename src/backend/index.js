@@ -18,62 +18,161 @@ app.use(express.json());
 app.use(express.static('/home/node/app/static/'));
 
 //=======[ Main module code ]==================================================
-app.get("/otraCosa/:id/:algo",(req,res,next)=>{
-    console.log("id",req.params.id)
-    console.log("algo",req.params.algo)
-    connection.query("select * from Devices where id="+req.params.id,(err,rsp,fields)=>{
-        if(err==null){
-            
-            console.log("rsp",rsp);
-            res.status(200).send(JSON.stringify(rsp));
-        }else{
-            console.log("err",err);
-            res.status(409).send(err);
-        }
-        
-        //console.log(fields);
-    });
-    
-});
 
-app.post("/addDevice", (req,res) => {
-    console.log("Agregando nuevo dispositivo...")
-    console.log("Nuevo dispositivo agregado")
-})
+/*ADD DEVICE*/
+app.post("/addDevice", (req, res) => {
+    console.log("Executing POST to add new device...");
 
-app.post("/removeDevice", (req,res) => {
-    console.log("Eliminando dispositivo...")
-    console.log("Dispositivo eliminado")
-})
+    const { name, description } = req.body;
 
-app.post("/modifyDevice",(req,res)=>{
-    console.log("Llego el post",
-    "UPDATE Devices SET state = "+req.body.state+" WHERE id = "+req.body.id);
-    if(req.body.name==""){
-        res.status(409).send("no tengo nada que hacer");
-    }else{
-        res.status(200).send("se guardo el dispositivo");
+    if (!name || !description) {
+        return res.status(400).send("Name and description are required fields.");
     }
-    
+
+    const defaultState = req.body.state || 0;
+    const defaultType = req.body.type || 0;
+
+    const query = 'INSERT INTO Devices (name, description, state, type) VALUES (?, ?, ?, ?)';
+
+    connection.query(query, [name, description, defaultState, defaultType], (err, results) => {
+        if (err) {
+            console.error('Error adding device:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        const insertedId = results.insertId;
+        res.status(201).send(`Device added successfully with ID: ${insertedId}`);
+    });
 });
 
+
+/*REMOVE DEVICE*/
+app.post("/removeDevice", (req, res) => {
+    console.log("Executing POST to remove Device " + req.body.id);
+
+    const deviceId = req.body.id;
+
+    if (!deviceId) {
+        return res.status(400).send("Device ID is required.");
+    }
+
+    const query = 'DELETE FROM Devices WHERE id = ?';
+
+    connection.query(query, [deviceId], (err, results) => {
+        if (err) {
+            console.error('Error removing device:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Device not found.');
+        }
+
+        res.status(200).send('Device removed successfully.');
+    });
+});
+
+
+/*MODIFY DEVICE NAME AND DESCRIPTION*/
+app.post("/modifyDevice", (req, res) => {
+    console.log("Executing POST for Device: ", req.body.id);
+
+    if (!req.body.id) {
+        return res.status(400).send("Device ID is required.");
+    }
+
+    let query;
+
+    if (req.body.name !== "") {
+        query = `UPDATE Devices SET name = ${req.body.name} WHERE id = ${req.body.id}`;
+    } else if (req.body.description !== "") {
+        query = `UPDATE Devices SET description = ${req.body.description} WHERE id = ${req.body.id}`;
+    } else {
+        return res.status(409).send("Please provide either device name or description.");
+    }
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error updating device:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        if (results.affectedRows > 0) {
+            res.status(200).send("Device updated successfully.");
+        } else {
+            res.status(404).send("Device not found.");
+        }
+    });
+});
+
+/*CHANGE DEVICE STATE*/
 app.post("/changeDeviceState", (req,res) => {
-    console.log("Cambiando estado de dispositivo...")
-    console.log("Estado actualizado")    
+    console.log("Executing POST for Device: ", req.body.id);
+
+    if (!req.body.id) {
+        return res.status(400).send("Device ID is required.");
+    }
+
+    let query;
+    query = `UPDATE Devices SET state = ${req.body.state} WHERE id = ${req.body.id}`;
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error updating device:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        if (results.affectedRows > 0) {
+            res.status(200).send("Device updated successfully.");
+        } else {
+            res.status(404).send("Device not found.");
+        }
+    });
 })
 
+/*GET DEVICE BY ID*/
+app.get('/device/:id', (req, res) => {
+    const deviceId = req.params.id;
+
+    if (!deviceId) {
+        return res.status(400).send('Device ID is missing.');
+    }
+
+    const query = 'SELECT * FROM Devices WHERE id = ?';
+    console.log('Executing GET Device: ', deviceId);
+
+    connection.query(query, [deviceId], (err, results) => {
+        if (err) {
+            console.error('Error querying smart_home.Devices:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        if (results.length === 0) {
+            return res.status(404).send('Device not found.');
+        }
+
+        res.json(results[0]);
+    });
+});
+
+/*GET ALL DEVICES*/
 app.get('/devices', (req, res) => {
     const query = 'SELECT * FROM Devices';
 
     connection.query(query, (err, results) => {
         if (err) {
-            console.error('Error querying devices:', err);
-            res.status(500).send('Internal Server Error');
-            return;
+            console.error('Error querying smart_home.Devices:', err);
+            return res.status(500).send('Internal Server Error');
         }
+
+        if (results.length === 0) {
+            return res.status(404).send('No devices found.');
+        }
+
         res.json(results);
     });
 });
+
 
 app.listen(PORT, () => {
     console.log("NodeJS API running correctly");

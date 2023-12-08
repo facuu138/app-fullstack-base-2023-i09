@@ -35,7 +35,25 @@ main {
 
 #devicesAttributes {
     display: flex !important;
+    position: relative !important;
     justify-content: flex-end !important;
+    align-items: center !important;
+}
+
+.collection-item {
+    display: flex !important;
+    position: relative !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+}
+
+.material-icons span {
+    color:#fb8c00;
+}
+
+.slider-div input {
+    padding: 0 !important;
+    height: 0;
 }
 
 div>div.col{
