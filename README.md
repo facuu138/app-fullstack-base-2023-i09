@@ -158,13 +158,37 @@ En esta sección podés ver los detalles específicos de funcionamiento del cód
 
 ### Agregar un dispositivo
 
-Completá los pasos para agregar un dispositivo desde el cliente web.
+1. Dar click en "Add Device (+)"
+2. Añadir nombre y descripcion
+3. El ID, state, image_utl y type se definen automaticamente.
 
 ### Frontend
 
-Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
+El frontend consta de 4 interacciones principales.
+1. Edit Device: permite editar el nombre y descripcion de un dispositivo.
+2. Change State (toggle): permite editar el estado de un dispositivo.
+3. Remove Device: permite eliminar un dispositivo.
+4. Add Device: permite agregar un dispositivo.
+
+En el UI se muestran todos los dispositivos disponibles en la base de datos y se permite la interaccion con la misma a traves de las interacciones mencionadas con anterioridad.
+
+En el archivo main.ts se encuentra toda la logica con la que fue construida esta web app.
+
+Adicional se agrego una pagina de FAQ a modo de ejemplo y se agrego el apartado de "Contact Information".
 
 ### Backend
+
+En el archivo src/backend/index.js podran encontrar toda la configuracion del backend
+
+El backend consta de 6 APIs.
+
+base_url: localhost:8000
+GET("/device/:id") --> Permite traer los datos de un dispositivo en especifico, basado en su id como parametro.
+GET("/devices) --> Permite traer todos los dispositivos.
+POST("addDevice") --> Permite agregar un dispositivo nuevo, requiere de "name" y "description" en el body.
+POST("removeDevice") --> Permite eliminar un dispositivo, requiere del "id" en el body.
+POST("modifyDevice") --> Permite modificar el nombre y la descripcion de un dispositivo, requiere de "name" o "descripcion" en el body.
+POST("changeDeviceState") --> Permite modificar el estado de un dispositivo, requiere de "state" en el body.
 
 Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
 
@@ -175,21 +199,102 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
 1) Devolver el estado de los dispositivos.
 
 ```json
-{
+[{
     "method": "get",
+    "api": "/devices",
     "request_headers": "application/json",
-    "request_body": "",
+    "base_url": "localhost:8000",
+    "response_code": 200,
+    "response_body": {
+        "devices": [
+            {
+                "id": 1,
+                "name": "Light",
+                "state": true,
+                "type": true,
+                "description": "Kitchen light",
+                "image_url":"./folder/example.png"
+            }
+        ]
+    }
+},
+{   
+    "method": "get",
+    "api": "/device/:id",
+    "request_headers": "application/json",
+    "base_url": "localhost:8000",
+    "response_code": 200,
+    "response_body": {
+        "device": [
+            {
+                "name": "Light",
+                "state": true,
+                "type": true,
+                "description": "Kitchen light",
+                "image_url":"./folder/example.png"
+            }
+        ]
+    }
+},
+{
+    "method": "post",
+    "api": "/addDevice",
+    "request_headers": "application/json",
+    "base_url": "localhost:8000",
+    "response_code": 200,
+    "request_body": {
+        "devices": [
+            {
+                "name":"Light",
+                "description": "Kitchen light"
+            }
+        ]
+    }
+},
+{
+    "method": "post",
+    "api": "/removeDevice",
+    "request_headers": "application/json",
+    "base_url": "localhost:8000",
     "response_code": 200,
     "request_body": {
         "devices": [
             {
                 "id": 1,
-                "status": true,
+            }
+        ]
+    }
+},
+{
+    "method": "post",
+    "api": "/modifyDevice",
+    "request_headers": "application/json",
+    "base_url": "localhost:8000",
+    "response_code": 200,
+    "request_body": {
+        "devices": [
+            {
+                "name":"Light",
                 "description": "Kitchen light"
             }
         ]
+    }
+},
+{
+    "method": "post",
+    "api": "/changeDeviceState",
+    "request_headers": "application/json",
+    "base_url": "localhost:8000",
+    "response_code": 200,
+    "request_body": {
+        "devices": [
+            {
+                "id": 1,
+                "state": true,
+            }
+        ]
     },
-}
+}]
 ``` 
 
 </details>

@@ -87,7 +87,7 @@ app.post("/modifyDevice", (req, res) => {
     if (req.body.name !== "") {
         query = `UPDATE Devices SET name = "${req.body.name}" WHERE id = ${req.body.id}`;
     } else if (req.body.description !== "") {
-        query = `UPDATE Devices SET description = ${req.body.description} WHERE id = ${req.body.id}`;
+        query = `UPDATE Devices SET description = "${req.body.description}" WHERE id = ${req.body.id}`;
     } else {
         return res.status(409).send("Please provide either device name or description.");
     }
